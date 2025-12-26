@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bangla Document Classification </title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+    .card {
+      background: #111827;
+      border: 1px solid #1f2933;
+      color: #e5e7eb;
+    }
+    .alert-success {
+      background-color: #064e3b;
+      border-color: #10b981;
+      color: #d1fae5;
+    }
+    .alert-warning {
+      background-color: #78350f;
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+    textarea {
+      background: #020617;
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container py-4">
+
+  <!-- HEADER -->
+  <h1 class="mb-1">📄 Bangla Document Classification Using Deep learning</h1>
+  <p class="text-secondary">
+    Enhancing Bangla Document Classification Using a Hybrid Ensemble of Bangla-BERT and Bi-LSTM Models  
+    <br><b>IDAA 2025 – Published Research</b>
+  </p>
+
+  <!-- INPUT -->
+  <form method="post" class="mb-4">
+    {% csrf_token %}
+    <textarea class="form-control mb-3" name="text" rows="6"
+      placeholder="Paste Bangla news article here...">{{ text }}</textarea>
+    <button class="btn btn-primary px-4">🔍 Predict</button>
+  </form>
+
+  <!-- WARNING -->
+  {% if warning %}
+    <div class="alert alert-warning">{{ warning }}</div>
+  {% endif %}
+
+  <!-- RESULTS -->
+  {% if final_label %}
+    <hr class="my-4">
+
+    <h3 class="mb-3">🏆 FINAL RESULT</h3>
+
+    {% if confident %}
+      <div class="alert alert-success">
+        ✅ <b>{{ final_label }}</b> ({{ ensemble_prob }}%)
+      </div>
+    {% else %}
+      <div class="alert alert-warning">
+        ⚠️ <b>{{ final_label }}</b><br>
+        This article contains overlapping semantic themes.  
+        Final label chosen using confidence threshold.
+      </div>
+    {% endif %}
+
+    <!-- MODEL CARDS -->
+    <div class="row text-center mb-4">
+      <div class="col-md-4 mb-2">
+        <div class="card p-3">
+          <h6>Bi-LSTM</h6>
+          <h5>{{ bilstm_label }}</h5>
+          <span class="text-success">{{ bilstm_prob }}%</span>
+        </div>
+      </div>
+      <div class="col-md-4 mb-2">
+        <div class="card p-3">
+          <h6>Bangla-BERT</h6>
+          <h5>{{ bert_label }}</h5>
+          <span class="text-success">{{ bert_prob }}%</span>
+        </div>
+      </div>
+      <div class="col-md-4 mb-2">
+        <div class="card p-3">
+          <h6>Hybrid Ensemble</h6>
+          <h5>{{ ensemble_label }}</h5>
+          <span class="text-success">{{ ensemble_prob }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <h4 class="mb-3">📊 Probability Distribution</h4>
+    <div class="row mb-4">
+      <div class="col-md-4 mb-2">
+        <img class="img-fluid rounded" src="data:image/png;base64,{{ bilstm_chart }}">
+      </div>
+      <div class="col-md-4 mb-2">
+        <img class="img-fluid rounded" src="data:image/png;base64,{{ bert_chart }}">
+      </div>
+      <div class="col-md-4 mb-2">
+        <img class="img-fluid rounded" src="data:image/png;base64,{{ ensemble_chart }}">
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <h4 class="mb-3">📋 Class-wise Probabilities</h4>
+    <table class="table table-dark table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Class</th>
+          <th>Bi-LSTM</th>
+          <th>Bangla-BERT</th>
+          <th>Hybrid</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c,b,be,e in rows %}
+        <tr>
+          <td>{{ c }}</td>
+          <td>{{ b|floatformat:4 }}</td>
+          <td>{{ be|floatformat:4 }}</td>
+          <td>{{ e|floatformat:4 }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+  <hr>
+  <p class="text-center text-secondary small">
+    IDAA 2025 | Hybrid Ensemble of Bangla-BERT & Bi-LSTM | Mahedi Hasan Emon et al.
+  </p>
+
+</div>
+</body>
+</html>

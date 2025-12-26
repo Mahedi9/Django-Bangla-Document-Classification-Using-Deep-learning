@@ -1,0 +1,15 @@
+Django
+
+numpy
+pandas
+scikit-learn
+joblib
+matplotlib
+seaborn
+tqdm
+
+torch
+transformers
+tensorflow
+
+bnltk
