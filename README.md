@@ -32,6 +32,11 @@ The system is designed for **research, academic demonstration, and real-world de
     http://127.0.0.1:8000/
 
 ---
+<img width="1280" height="633" alt="image" src="https://github.com/user-attachments/assets/352724fd-d0d2-4987-8e9d-df180553f7ae" />
+<img width="1280" height="680" alt="image" src="https://github.com/user-attachments/assets/2566cf06-a79f-4fda-8463-ff087a12a87a" />
+<img width="1280" height="663" alt="image" src="https://github.com/user-attachments/assets/464ec4f4-34f2-4342-960f-176ec94780fe" />
+
+
 
 ## 🧠 Project Overview
 
